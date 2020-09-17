@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+   <head>
+      <meta charset="utf-8">
+      <title></title>
+      <script src='https://code.jquery.com/jquery-3.4.1.min.js'></script>
+      <script src='https://code.jquery.com/ui/1.12.1/jquery-ui.min.js'></script>
+      <link href='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css' rel="stylesheet">
+      <script src='https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js'></script>
+   </head>
+   <style media="screen">
+
+      body {
+        background-color: rgb(0, 128, 128)
+      }
+      .popup-body {
+        padding: 15px;
+      }
+      .popup-inner {
+        height: 100%;
+        width: 100%;
+        border: 1px solid dodgerblue;
+        box-sizing: border-box;
+        border-top: 2px solid rgb(255, 255, 255);
+        border-left: 2px solid rgb(255, 255, 255);
+        border-right: 2px solid rgb(153, 153, 153);
+        border-bottom: 2px solid rgb(153, 153, 153);
+      }
+      .popup-container {
+        border: 1px solid yellow;
+        border-top: 2px solid rgb(204, 204, 204);
+        border-left: 2px solid rgb(204, 204, 204);
+        border-right: 2px solid rgb(0, 0, 0);
+        border-bottom: 2px solid rgb(0, 0, 0);
+        height: 100%;
+        width: 100%;
+      }
+      .popup-content {
+        border-sizing: border-box;
+        background-color: rgb(214, 214, 206);
+        width: 100%;
+        height: 100%;
+      }
+      .popup-header {
+        background-color: rgb(0, 0, 153);
+        color: white;
+        position: relative;
+        display: block;
+        font-size: 13px;
+        border-sizing: border-box;
+        font-family: 'pixelated';
+        height: 20px;
+      }
+      .main-container {
+        width: 700px;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform:translate(-50%, -50%);
+        padding: 30px;
+      }
+      .pointer {
+        cursor: pointer;
+      }
+      .exit-btn {
+        height: 16px;
+        margin-left: auto;
+        margin-right: 0px;
+        position: absolute;
+        right: 2px;
+        top: 2px;
+      }
+
+   </style>
+   <body>
+     <div class='main-container' id='my-container'>
+        <div class='popup-container ' id='my-window'>
+           <div class='popup-inner'>
+              <div class='popup-content'>
+                 <div class="popup-header move noselect" id='my-handler'>
+                    <img src='./exit-btn.png' class='exit-btn'>
+                 </div>
+                 <div class='popup-body'>
+                    <h4>Windows 98 Demo</h4>
+                    <br>
+                    <p>A quick & simple recreation of the windows 98 aesthetic using HTML, JS and CSS.</p>
+                    <br>
+                 </div>
+              </div>
+           </div>
+        </div>
+     </div>
+   </body>
+</html>
+
+
+
+<script type="text/javascript">
+   function DraggableContainer(elWindow, elHandle){
+
+     var dc = this;
+
+     dc.dragging = false;
+     dc.handle = elHandle;
+     dc.elem = elWindow;
+
+     dc.mouseDownX = 0;
+     dc.mouseDownY = 0;
+
+     dc.winX = 0;
+     dc.winY = 0;
+
+     $(dc.handle).on('mousedown', function( e ){
+       dc.dragging = true;
+       dc.mouseDownX = e.pageX - dc.winX;
+       dc.mouseDownY = e.pageY - dc.winY;
+     })
+
+     $(window).on('mousemove', function( e ){
+       if(dc.dragging){
+         var offsetX = (e.pageX - dc.mouseDownX)
+         var offsetY = (e.pageY - dc.mouseDownY)
+         dc.winX = offsetX
+         dc.winY = offsetY
+         $(elWindow).css('transform', 'translate(' + offsetX + 'px, ' + offsetY + 'px)')
+       }
+     })
+
+     $(window).on('mouseup', function(){
+       if(dc.dragging){
+         dc.mouseDownX = 0;
+         dc.mouseDownY = 0;
+         dc.dragging = false;
+       }
+     })
+   }
+
+   new DraggableContainer($('#my-window'), $('#my-handler'))
+
+</script>
